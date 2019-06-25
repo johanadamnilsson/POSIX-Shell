@@ -1,0 +1,155 @@
+
+\documentclass[1pt]{proc}
+
+\usepackage[dvips]{color}
+\usepackage{pdflscape}
+\usepackage{multicol}
+
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{colortbl}
+
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+\setlength{\textwidth}{500pt}
+
+\title{POSIX Shell Script}
+\author{Adam Nilsson}
+
+%\begin{lstlisting}[language=bash,caption={bash version}]
+%#!/bin/bash
+%echo "Hello, world!"
+%\end{lstlisting}
+
+\begin{document}
+\begin{landscape}
+\huge{POSIX Shell Script}
+\normalsize \\
+\begin{multicols}{3}
+\colorbox{lightgray}{Variables}\\
+Set a value to environment variable\\
+VARIABLE=Value \\
+using variable \\
+\textbf{echo} \$SHELL \\
+\colorbox{lightgray}{Comments}\\
+\# this is a comment\\
+\colorbox{lightgray}{test \textit{condition} or [\textit{condition}]}
+
+test is a program for strings, numerical and file checks. test \textit{expression} can be expressed [ \textit{expression} ] witch tends to be how its written in scripts.
+Some common condition.\\
+\underline{String test} \\
+\begin{tabular}{ l l }
+	-n \textbf{str} & check if string is not empty \\
+	-z \textbf{str} & check if string is empty \\
+	\textbf{str} = \textbf{str} & String equal \\
+	\textbf{str} != \textbf{str} & String inequality
+\end{tabular}
+\underline{Numerical test} \\
+\begin{tabular}{ l l }
+	\textbf{num} -eq \textbf{num} & check if numbers are equal \\
+	\textbf{num} -ne \textbf{num} & check if numbers are unequal \\
+	\textbf{num} -lt \textbf{num} & check if less than \\
+	\textbf{num} -le \textbf{num} & check if less or equal than
+\end{tabular}
+\underline{File test} \\
+\begin{tabular}{ l l }
+	-f \textbf{file} & check if it is file \\
+	-d \textbf{file} & check if it is a directory \\
+	-r \textbf{file} & check if file is readable \\
+	-w \textbf{file} & check if file is writable \\
+	-x \textbf{file} & check if file is executable
+\end{tabular}
+
+for more condition: \textbf{man test}\\
+\colorbox{lightgray}{ Combinding statments}\\
+\textit{stmt1} \textbf{\&\&} \textit{stmt2} \# run stmt2 if stmt1 was true \\
+\textit{stmt1} \textbf{$||$} \textit{stmt2} \# run stmt2 if stmt1 was false \\
+\textbf{\textbackslash} at the end of a line continues it on the next\\
+\colorbox{lightgray}{Command Substitution}\\
+\textbf{echo \$(ls)}\\
+\colorbox{lightgray}{String handling}\\
+'text' all text will be interpret as it \\
+"text" can use shell injections (using variables or commands)\\
+\colorbox{lightgray}{if stmt}\\
+\textbf{if} \textit{stmt}
+\textbf{then}
+\textit{stmts}\\
+\textbf{elif} \textit{stmt} 
+\textbf{then} \textit{stmts} \# optional\\ 
+\textbf{else} \textit{stmts} \# optional\\
+\textbf{fi}\\
+\colorbox{lightgray}{while stmt}\\
+\textbf{while} \textit{stmt}
+\textbf{do}
+\textit{stmts}
+\textbf{done} \\
+\textbf{break} \# exits loop \\
+\textbf{continue} \# starts next iteration of loop\\
+\colorbox{lightgray}{until stmt}\\
+\textbf{until} \textit{stmt}
+\textbf{do}
+\textit{stmts}
+\textbf{done} \\
+\colorbox{lightgray}{for stmt}\\
+\textbf{for} \textit{x} \textbf{in} \textit{values}
+\textbf{do}
+\textit{stmts}
+\textbf{done}  \\
+For each iteration of the loop x will get a new string value from the  pool in \textit{values}.\\
+\colorbox{lightgray}{switch case stmt}\\
+\textbf{case} var \textbf{in} \\
+\textit{pattern}
+\textbf{)}
+\textit{stmts}
+\textbf{;;}
+\# can be several \\
+\textit{*}
+\textbf{)}
+\textit{stmts}
+\textbf{;;} \# default catch \\
+\textbf{esac} \\
+Patterns can be written \textit{pattern} $|$ \textit{pattern} for matching several patterns.\\
+\colorbox{lightgray}{functions}\\
+\textit{functionName}\textbf{()}\{\textit{stmts}\}\\
+\textbf{return} \# breaks function and returns \\
+\textbf{exit} \textit{num} \# exit and returns num as exit value \\
+\colorbox{lightgray}{Using parameters inside a function}\\
+\textbf{\$0} teling you the function name\\
+\textbf{\$1} using the first parameter\\
+\textbf{\$@} printing all parameters\\
+\textbf{shift} will shift all in parameters to a funciton to be shifted, \$1=\$2 ....\\
+\textbf{\$\#} number of passed function arguments  \\
+\textbf{\$?} exes status of last run program\\
+\textbf{\$!} PID of last background job \\
+\textbf{\$\$} PID of current shell \\
+\colorbox{lightgray}{Debug}\\
+\textbf{set +x} \# enable debug prints\\
+\textbf{set -x} \# stops debug prints\\
+VARIABLE=something \textit{stmt} \\
+This will set the VARIABLE to something and it can be used inside that stmt however will not be set on the other line.\\
+\colorbox{lightgray}{Running programs in background}\\
+\textit{stmt} \& \\
+\textbf{jobs} print ongoing jobs\\
+\textbf{fg} bring job 1 to forground\\
+\textbf{bg} bring current job to background\\
+\%x \# bring job x to forground
+\textbf{kill -9} \%x \# sends signal to job x\\
+\colorbox{lightgray}{Directing output}\\
+\textit{prog1} $|$  \textit{prog2} \# \textit{prog1} output will become \textit{prog2} input\\
+\textit{stmt} $>$ \textit{file} \# writes the output of stmt to the new file with filename\\
+\textit{stmt} $>>$ \textit{file} \# appends file with filename with output of stms\\
+\textit{stmt} $2>\&1$ \# direct \textit{stderr} to \textit{stdout}\\
+number $>$ will tell what file descriptor, if omitted 1 will be assumed. 1 is stdout, 2 is stderr  \\
+\colorbox{lightgray}{Expansion}\\
+\colorbox{lightgray}{Arithmetic Expansion}\\
+expr \\
+\$((\textit{expression})) \# return value of expression\\
+** \# power\\
+\$((\$((10**2)) - 50)) \# returns 50\\
+\colorbox{lightgray}{Pattern Matching}\\
+* matches zero or all characters\\
+? matches zero or one character\\
++ matches one character\\
+\end{multicols}
+\end{landscape}
+\end{document}
